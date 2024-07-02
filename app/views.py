@@ -227,3 +227,54 @@ class Order7foodCreateView(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+
+from django.shortcuts import render, redirect
+
+
+
+
+def category_dashboard(request):
+        category_list= Category.objects.all()
+
+        context = {
+            'category_list': category_list,
+        }
+        return render(request, 'category-dashboard.html', context)
+
+
+def orders_dashboard(request):
+    orders_list = Order.objects.all()
+
+    context = {
+        'orders_list': orders_list,
+    }
+    return render(request, 'orders-dashboard.html', context)
+
+from django.views.generic import ListView, DetailView
+from .models import Order
+
+
+class OrderListView(ListView):
+    model = Order
+    template_name = 'order_list.html'
+    context_object_name = 'orders'
+
+class OrderDetailView(DetailView):
+    model = Order
+    template_name = 'order_detail.html'
+    context_object_name = 'order'
+
+
+
+class SubCategoryListView(ListView):
+    model = SubCategory
+    template_name = 'subcategory_list.html'
+    context_object_name = 'subcategories'
+
+class SubCategoryDetailView(DetailView):
+    model = SubCategory
+    template_name = 'subcategory_detail.html'
+    context_object_name = 'subcategory'

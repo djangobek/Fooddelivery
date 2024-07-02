@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h1>SubCategory Detail</h1>
+    <p>Name: {{ subcategory.name }}</p>
+    <p>Name (UZ): {{ subcategory.name_uz }}</p>
+    <p>Name (RU): {{ subcategory.name_ru }}</p>
+    <p>Category: {{ subcategory.category.name }}</p>
+
+    <h2>Products</h2>
+    <ul>
+        {% for product in subcategory.products.all %}
+            <li>
+                <p>Name: {{ product.name }}</p>
+                <p>Name (UZ): {{ product.name_uz }}</p>
+                <p>Name (RU): {{ product.name_ru }}</p>
+                <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                <p>About: {{ product.about }}</p>
+                <p>About (UZ): {{ product.about_uz }}</p>
+                <p>About (RU): {{ product.about_ru }}</p>
+                <p>Price: {{ product.price }}</p>
+                <p>Discount: {{ product.discount }}</p>
+            </li>
+        {% endfor %}
+    </ul>
+
+<div id="div_id_students" class="form-group">
+            <label for="id_students" class="requiredField">Category</label>
+            <div>
+                <table id="datatable" class="table table-bordered dt-responsive nowrap w-100">
+                    <thead>
+                        <tr>
+                            <th scope="col">Select</th>
+                            <th scope="col">Full Name </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for student in category_list %}
+                        <tr>
+                            <td>
+                                <input class="form-check-input" type="checkbox" name="students" value="{{ student.id }}" id="student_{{ student.id }}">
+                            </td>
+                            <td>
+                                <label class="form-check-label" for="student_{{ student.id }}">
+                                    {{ student.name }}
+                                </label>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
+{% endblock content %}

@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+    <h1>Order Detail</h1>
+    <p>User: {{ order.user.name }}</p>
+    <p>Created: {{ order.created }}</p>
+    <p>Total Products: {{ order.all_products }}</p>
+    <p>Total Shops: {{ order.all_shop }}</p>
+{% endblock content %}

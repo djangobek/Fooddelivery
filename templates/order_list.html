@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h3 class="text-muted mt-2">Order List</h3>
+    <ul>
+        {% for order in orders %}
+            <li class="text-muted mt-2">
+                <a href="{% url 'order_detail' order.pk %}">{{ order.user.name }} - {{ order.created }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+
+
+
+
+{% endblock content %}

@@ -23,4 +23,11 @@ urlpatterns=[
     path('delete_basket/', DestroyBasket.as_view()),
     path('delete_item/', DeleteItem.as_view()),
     path('user_info/',BotUserInfo.as_view()),
+    path('category-list/', category_dashboard, name='category_dashboard'),
+    path('orders-list/', orders_dashboard, name='orders_dashboard'),
+    path('api/', include(router.urls)),
+    path('orders/', OrderListView.as_view(), name='order_list'),
+    path('orders/<int:pk>/', OrderDetailView.as_view(), name='order_detail'),
+    path('subcategories/', SubCategoryListView.as_view(), name='subcategory_list'),
+    path('subcategories/<int:pk>/', SubCategoryDetailView.as_view(), name='subcategory_detail'),
 ]

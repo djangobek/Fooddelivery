@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+<div id="div_id_students" class="form-group">
+            <label for="id_students" class="requiredField">Category {{ orders_list.items }}</label>
+            <div>
+                <table id="datatable" class="table table-bordered dt-responsive nowrap w-100">
+                    <thead>
+                        <tr>
+                            <th scope="col">Select</th>
+                            <th scope="col">Name </th>
+                            <th scope="col">created </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for order in orders_list %}
+                        <tr>
+                            <td>
+                                <input class="form-check-input" type="checkbox" name="students" value="{{ student.id }}" id="student_{{ student.id }}">
+                            </td>
+                            <td>
+                                <label class="form-check-label" for="student_{{ student.id }}">
+                                    {{order}}
+                                </label>
+                            </td>
+                            <td>{{ order.created }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+{% endblock content %}
+
