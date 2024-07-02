@@ -39,18 +39,10 @@
 
     <!-- Include Select2 JS -->
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-
-
-
-
 </head>
-
     <body>
-
     <!-- <body data-layout="horizontal"> -->
-
         <!-- Begin page -->
-        <div id="layout-wrapper">
             <header id="page-topbar">
                 <div class="navbar-header">
                     <div class="d-flex">
@@ -136,273 +128,68 @@
             <div class="main-content">
 
                 <div class="page-content">
+
                     <div class="container-fluid">
-
-
                         <!-- end page title -->
-                       <div class="row" >
-                          <div class="col-sm-4" >
-                        <div class="card">
-                            <div class="card-header">
-
-                                <h4 class="card-title">To'lov qilish </h4>
-
-                                <p class="card-title-desc">To'lov qilish uchun o'quvchi va summani kiriting.</p>
-                            </div>
-                            <div class="card-body">
-
-                              <form  method="post"  action="#" >{% csrf_token %}
-
-
-                                <div class="mb-3 select2-search__field">
-                                    <label for="inputGroupSelect" class="form-label">O'quvchi</label>
-                                    <select name="student_id" required class="form-select" id="inputGroupSelect">
-                                        <option value="" disabled selected>Tanlash...</option>
-                                        {% for i in students %}
-                                        <option value="{{ i.id }}">{{ i.full_name }}</option>
-                                        {% endfor %}
-                                    </select>
-                                </div>
-
-                                   <div class="form-group">
-                                        <label for="course_id" class="form-label">Kurs</label>
-                                        <select id="course_id" name="course_id" class="form-select" required>
-                                            {% for course in courses %}
-                                            <option value="{{ course.id }}">{{ course.name }}</option>
-                                            {% endfor %}
-                                        </select>
-                                    </div>
-                                <div  class="mb-3">
-                                      <label for="exampleInputEmail" class="form-label">To'lov summasi</label>
-                                      <input required placeholder="200000" type="number" name="summ" class="form-control" id="exampleInputEmail" aria-describedby="emailHelp">
-                                </div>
-                                <button style="margin-top: 5px; margin-bottom: 5px;"type="submit" class="btn btn-primary">Tasdiqlash</button>
-                              </form>
-                            </div>
-                          </div>
-
-    <!-- Initialize Select2 on the select element -->
-
-
-                       </div>
-
-           <div class="col-sm-4" >
-                          <div class="card">
-                            <div class="card-header">
-                                <h4 class="card-title">Yangi o'quvchi </h4>
-                                <p class="card-title-desc">Yangi o'quvchini ismi familiyasi va telfon raqamini kiriting. </p>
-                            </div>
-                            <div class="card-body">
-
-                            <form method="post" action="#" enctype="multipart/form-data">
-                                {% csrf_token %}
-                                <div class="mb-3">
-                                    <label for="exampleInputFullName" class="form-label">O'quvchining to'liq ismi</label>
-                                    <input required placeholder="Ilon Musk" name="full_name" type="text" class="form-control" id="exampleInputFullName" aria-describedby="fullNameHelp">
-                                </div>
-                                <div class="mb-3">
-                                    <label for="phone_number" class="form-label">Telefon raqam</label>
-                                    <input required placeholder="+998907777777" type="number" name="phone_number" class="form-control" id="phone_number" aria-describedby="phoneNumberHelp">
-                                </div>
-                                <div class="mb-3">
-                                    <label for="course" class="form-label">Kurs</label>
-                                    <select required name="course" class="form-select" id="course">
-                                        {% for i in course_id %}
-                                            <option value="{{ i.id }}">{{ i.name }}</option>
-                                        {% endfor %}
-                                    </select>
-                                </div>
-                                <button style="margin-top: 5px; margin-bottom: 5px;" type="submit" class="btn btn-primary">Yaratish</button>
-                            </form>
-
-                            </div>
-                          </div>
-                       </div>
-                       <div class="col-sm-4" >
-                        <div class="card">
-                          <div class="card-header">
-                              <h4 class="card-title">Kursga o'quvchi qo'shish.</h4>
-                              <p class="card-title-desc">Student va Kursni tanlang.</p>
-                          </div>
-                          <div class="card-body">
-                            <form action="#" method="post"   >{% csrf_token %}
-
-                                    <div class="mb-3 select2-search__field">
-                                        <label for="inputGroupSelect1" class="form-label">O'quvchi</label>
-                                        <select name="student_id" required class="form-select" id="inputGroupSelect1">
-                                            <option value="" disabled selected>Tanlash...</option>
-                                            {% for i in students %}
-                                            <option value="{{ i.id }}">{{ i.full_name }}</option>
-                                            {% endfor %}
-                                        </select>
-                                    </div>
-                            <div  class="mb-3">
-                                      <label for="exampleInputEmail1" class="form-label">Kurs</label>
-                                      <select required name="course_id"  required class="form-select" id="inputGroupSelect01">
-
-                                          {% for i in courses %}
-                                          <option value="{{i.id}}">{{i.name}}</option>
-                                          {% endfor %}
-                                        </select>
-
-                                </div>
-
-                                <button style="margin-top: 5px; margin-bottom: 5px;"type="submit" class="btn btn-primary">Bajarish</button>
-                              </form>
-                          </div>
-                        </div>
-                     </div>
-                    </div>
                     <!-- end row -->
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="card">
-                                <div class="card-header">
-                                    <h4 class="card-title">Yangi o'quvchilar ro'yxati</h4>
+                         {% block content %}
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h4 class="card-title">Yangi o'quvchilar ro'yxati</h4>
+                                    </div>
+                                    <div class="card-body" style="overflow-x: auto;">
+                                       <table class="datatable-buttons nowrap table table-striped table-bordered dataTable no-footer dtr-inline" role="grid" cellspacing="0" aria-describedby="member-details_info">
+                                            <thead>
+                                                <tr style="text-align: center;">
+                                                    <th scope="col">#</th>
+                                                    <th scope="col">Ro'yxatga olingan o'quvchilar</th>
+                                                    <th scope="col">Tanlagan Kurs</th>
+                                                    <th scope="col">Telefon raqam</th>
+                                                    <th scope="col">Sana</th>
+                                                    <th scope="col" >Kursga qatnashishi</th>
+                                                    <th scope="col" >Tahrirlash</th>
+                                                    <th scope="col" >Username ochish</th>
 
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for i in receiptions %}
+                                                <tr style="text-align: center;">
+                                                    <th scope="row">{{ forloop.counter }}</th>
+                                                    <td scope="row"><a href="{% url 'edit_receiption' i.id %}">{{ i.full_name }}</a></td>
+                                                    <td scope="row">{{ i.course }}</td>
 
+                                                    <td scope="row">{{ i.phone_number}}</td>
+
+                                                    <td scope="row">{{ i.created_at|date:"d.m.Y" }}</td>
+                                                    <td scope="row">
+                                                        {% if i.status %}
+                                                            <a href="{% url 'update-status' i.id %}">✅</a>
+                                                        {% else %}
+                                                            <a href="{% url 'update-status' i.id %}">❌</a>
+                                                        {% endif %}
+                                                    </td>
+                                                    <td scope="row" > <a href="{% url 'edit_receiption' i.id %}">✏️</a> </td>
+                                                     <td scope="row"><a href="{% url 'create-user' i.id %}">✏️</a> </td>
+                                                </tr>
+
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
-                                <div class="card-body" style="overflow-x: auto;">
-
-                                   <table class="datatable-buttons nowrap table table-striped table-bordered dataTable no-footer dtr-inline" role="grid" cellspacing="0" aria-describedby="member-details_info">
-                                    <thead>
-                                        <tr style="text-align: center;">
-                                            <th scope="col">#</th>
-                                            <th scope="col">Ro'yxatga olingan o'quvchilar</th>
-                                            <th scope="col">Tanlagan Kurs</th>
-                                            <th scope="col">Telefon raqam</th>
-                                            <th scope="col">Sana</th>
-                                            <th scope="col" >Kursga qatnashishi</th>
-                                            <th scope="col" >Tahrirlash</th>
-                                            <th scope="col" >Username ochish</th>
-
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {% for i in receiptions %}
-                                        <tr style="text-align: center;">
-                                            <th scope="row">{{ forloop.counter }}</th>
-                                            <td scope="row"><a href="{% url 'edit_receiption' i.id %}">{{ i.full_name }}</a></td>
-                                            <td scope="row">{{ i.course }}</td>
-
-                                            <td scope="row">{{ i.phone_number}}</td>
-
-                                            <td scope="row">{{ i.created_at|date:"d.m.Y" }}</td>
-                                            <td scope="row">
-                                                {% if i.status %}
-                                                    <a href="{% url 'update-status' i.id %}">✅</a>
-                                                {% else %}
-                                                    <a href="{% url 'update-status' i.id %}">❌</a>
-                                                {% endif %}
-                                            </td>
-                                            <td scope="row" > <a href="{% url 'edit_receiption' i.id %}">✏️</a> </td>
-                                             <td scope="row"><a href="{% url 'create-user' i.id %}">✏️</a> </td>
-                                        </tr>
-
-                                        {% endfor %}
-                                    </tbody>
-                                </table>
-
-                                </div>
-                            </div>
-                            <!-- end cardaa -->
-                             <div class="row">
-                        <div class="col-12">
-                            <div class="card">
-                                <div class="card-header">
-                                    <h4 class="card-title">Kurslar ro'yxati</h4>
-                                </div>
-                                <div class="card-body" style="overflow-x: auto;">
-
-                                    <table id="datatable-buttons" class="table table-bordered dt-responsive nowrap w-100">
-                                        <thead >
-                                            <tr style="text-align: center;">
-                                              <th scope="col">#</th>
-                                                <th scope="col">Kurs nomi</th>
-                                                <th scope="col">Smena</th>
-                                                 <th scope="col">Narxi </th>
-                                                <th scope="col">Hafta kunlari</th>
-                                                <th scope="col">Ustoz</th>
-                                                <th scope="col">O'quvchilar soni</th>
-                                                <th scope="col">Dars utiladigan xona</th>
-                                              </tr>
-                                        </thead>
-                                        <tbody>
-                                            {% for i in courses %}
-                                            <tr style="text-align: center;">
-                                              <th scope="row">{{ forloop.counter }}</th>
-
-                                                <td><a href="{% url 'course_details' i.id %}">{{i.name}}</a></td>
-                                              <td>{{i.time}}</td>
-                                                <td>{{i.price}} so'm</td>
-                                              <td>{{i.days}}</td>
-                                              <td>{{i.teacher.first_name }}  {{i.teacher.last_name }}</td>
-                                              <td>{{i.students.count}}</td>
-                                                <td>{{i.room }}</td>
-                                            </tr>
-                                            {% endfor %}
-                                        </tbody>
-                                    </table>
-
-                                </div>
-                            </div>
-                            <!-- end cardaa -->
-                        </div> <!-- end col -->
+                                <!-- end cardaa -->
+                            </div> <!-- end col -->
+                        </div> <!-- end row -->
+                         {% endblock content %}
                     </div>
-                            <div class="row">
-                        <div class="col-12">
-                            <div class="card">
-                                <div class="card-header">
-                                    <h4 class="card-title">To'lovlar ro'yxati </h4>
-                                </div>
-                                <div class="card-body" style="overflow-x: auto;">
-
-                                    <table style="text-align: center;" class="datatable-buttons nowrap table table-striped table-bordered dataTable no-footer dtr-inline" role="grid" cellspacing="0" aria-describedby="member-details_info">
-                                        <thead>
-                                            <tr>
-                                              <th scope="col">#</th>
-                                                <th scope="col">O'quvchi I.F.O</th>
-                                                <th scope="col">To'lov summasi</th>
-                                                <th scope="col">To'lov vaqti</th>
-                                                <th scope="col">Sana</th>
-                                                <th scope="col">Chek</th>
-
-                                              </tr>
-                                        </thead>
-                                        <tbody>
-                                            {% for i in tulov %}
-                                            <tr>
-                                              <th scope="row">{{ forloop.counter }}</th>
-                                              <td>{{i.student}}</td>
-                                              <td>{{i.summ }} so'm </td>
-                                              <td>{{i.time}}</td>
-
-                                              <td>{{i.date|date:"d.m.Y" }}</td>
-
-                                              <td><a href="{% url 'print_chek' i.id %}">Print Cheque{{i.id}}</a></td>
-                                            </tr>
-                                            {% endfor %}
-                                        </tbody>
-                                    </table>
-
-                                </div>
-
-                            </div>
-                            <!-- end cardaa -->
-
-                        </div> <!-- end col -->
-                    </div>
-
-
-                        </div> <!-- end col -->
-
-                    </div> <!-- end row -->
-
                   </div> <!-- container-fluid -->
 
-              </div>
                 </div>
-              </div>
+
+            </div>
 
     <script>
         $(document).ready(function() {
@@ -424,47 +211,24 @@
             });
         });
     </script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                <!-- End Page-content -->
-                <footer class="footer">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <script>document.write(new Date().getFullYear())</script> © <strong style="color: #D68D20"> CYBERCORE </strong>
-                            </div>
-                            <div class="col-sm-6">
-
-                            </div>
-                        </div>
-                    </div>
-                </footer>
+<!-- End Page-content -->
+<footer class="footer">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-6">
+                <script>document.write(new Date().getFullYear())</script> © <strong style="color: #D68D20"> CYBERCORE </strong>
             </div>
-            <!-- end main content-->
+            <div class="col-sm-6">
 
+            </div>
         </div>
-        <!-- END layout-wrapper -->
+    </div>
+</footer>
+
+<!-- end main content-->
+
+
+<!-- END layout-wrapper -->
 
 
         <!-- Right Sidebar -->
@@ -665,9 +429,6 @@
         <!-- datepicker js -->
         <script src="{% static 'assets/libs/flatpickr/flatpickr.min.js' %}"></script>
 
-
-
-
 <script>
 $(document).ready(function() {
     $('.datatable-buttons').each(function() {
@@ -676,12 +437,7 @@ $(document).ready(function() {
 });
 </script>
 
-
-
-
-    </body>
-
-<!-- Mirrored from themesbrand.com/minia/layouts/pages-starter.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 24 Aug 2022 06:28:52 GMT -->
+</body>
 </html>
 
 
