@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Create Order</title>
+</head>
+<body>
+    <h2>Create Order</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ order_form.as_p }}
+        {{ formset.management_form }}
+        {% for form in formset %}
+            {{ form.as_p }}
+        {% endfor %}
+        <button type="submit">Save Order</button>
+    </form>
+    <a href="{% url 'order_table_list' %}">Back to Orders</a>
+</body>
+</html>
