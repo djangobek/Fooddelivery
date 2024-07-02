@@ -26,4 +26,6 @@ urlpatterns=[
     path('delete_item/', DeleteItem.as_view()),
     path('user_info/',BotUserInfo.as_view()),
     path('total_order_time/', TotalOrderTimeView.as_view(), name='total-order-time'),
+    path('orders_web/', order_table_list_view, name='order_table_list'),
+    path('orders_web/new/', create_order_view, name='create_order'),
 ]

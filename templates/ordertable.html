@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Order Table</title>
+</head>
+<body>
+    <h2>Orders</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Created At</th>
+                <th>Products</th>
+                <th>Status</th>
+                <th>Total Sum</th>
+                <th>Estimated Time</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for order in orders %}
+            <tr>
+                <td>{{ order.name }}</td>
+                <td>{{ order.created_at }}</td>
+                <td>
+                    <ul>
+                        {% for item in order.items.all %}
+                        <li>{{ item.product.name }}: {{ item.quantity }}</li>
+                        {% endfor %}
+                    </ul>
+                </td>
+                <td>{{ order.status }}</td>
+                <td>{{ order.all_sum }}</td>
+                <td>{{ order.total_estimated_time }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <a href="{% url 'create_order' %}">Create New Order</a>
+</body>
+</html>
