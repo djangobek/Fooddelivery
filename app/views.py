@@ -12,6 +12,11 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
 from rest_framework import filters
 from .utils import Sum_all_order_time
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.forms import AuthenticationForm
+
 
 class BotUserViewset(ModelViewSet):
     queryset = BotUserModel.objects.all()
@@ -254,3 +259,49 @@ class Order7foodSaboyCreateView(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+def login_view(request):
+    if request.method == 'POST':
+        form = AuthenticationForm(request, data=request.POST)
+        if form.is_valid():
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password')
+            user = authenticate(username=username, password=password)
+            if user is not None:
+                login(request, user)
+                return redirect('home')
+    else:
+        form = AuthenticationForm()
+    return render(request, 'login.html', {'form': form})
+
+def logout_view(request):
+    logout(request)
+    return redirect('login')
+
+
+from django.shortcuts import render, get_object_or_404, redirect
+from .models import OrderTable, Product, OrderTableItem
+from .forms import OrderTableForm, OrderTableItemForm
+from django.forms import inlineformset_factory
+
+def order_table_list_view(request):
+    orders = OrderTable.objects.all()
+    return render(request, 'ordertable.html', {'orders': orders})
+
+def create_order_view(request):
+    OrderTableItemFormSet = inlineformset_factory(OrderTable, OrderTableItem, fields=('product', 'quantity'), extra=1, can_delete=True)
+    if request.method == 'POST':
+        order_form = OrderTableForm(request.POST)
+        formset = OrderTableItemFormSet(request.POST)
+        if order_form.is_valid() and formset.is_valid():
+            order = order_form.save()
+            formset.instance = order
+            formset.save()
+            return redirect('order_table_list')
+    else:
+        order_form = OrderTableForm()
+        formset = OrderTableItemFormSet()
+    return render(request, 'createtable.html', {'order_form': order_form, 'formset': formset})
+
+
