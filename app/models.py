@@ -1,4 +1,7 @@
 from django.db import models
+from django.db import models
+from django.utils.html import format_html
+from math import radians, sin, cos, sqrt, atan2
 # Create your models here.
 class BotUserModel(models.Model):
     languages = (
@@ -14,6 +17,7 @@ class BotUserModel(models.Model):
     latitude = models.CharField(max_length=200, null=True, blank=True)
     longitude = models.CharField(max_length=200, null=True, blank=True)
     added = models.DateTimeField(auto_now_add=True)
+    type = models.CharField(max_length=200, null=True, blank=True,)
     def __str__(self):
         if self.name:
             return f"{self.name}"
@@ -91,7 +95,7 @@ class Product(models.Model):
     about = models.TextField(verbose_name="About", null=True, blank=True)
     price = models.IntegerField(verbose_name="Price", help_text="Enter price", default=0)
     discount = models.IntegerField(verbose_name="Discount", help_text="Enter discount", default=0)
-
+    taxminiy_vaqt = models.IntegerField(default = 2, help_text="Tayyorlash uchun ketadigan  taxminiy vaqtni Kiriting !!", blank=True, null=True)
     def __str__(self):
         # print(self.image.url)
         if self.name:
@@ -158,6 +162,7 @@ class OrderItem(models.Model):
         verbose_name_plural = "OrderItems"
 
 
+
 class Order_7food(models.Model):
     telegram_id = models.IntegerField(verbose_name="Telegram ID", null=True, blank=True)
     full_name = models.CharField(max_length=150, verbose_name="Full name", null=True, blank=True)
@@ -167,6 +172,7 @@ class Order_7food(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     prepared = models.BooleanField(default=False, help_text="Agar buyurtma tayyorlangan bo`lsa chekboxni bosing !!!")
     delivered = models.BooleanField(default=False, verbose_name="Delivered")
+    taxminiy_vaqt = models.IntegerField(verbose_name="Taxminiy Vaq", default = 2, null=True, blank=True)
     def google_map_link(self):
         try:
             user = BotUserModel.objects.get(telegram_id=self.telegram_id)
@@ -180,6 +186,35 @@ class Order_7food(models.Model):
 
     google_map_link.short_description = 'Google Map Link'
 
+    @property
+    def distance_in_meters(self):
+        try:
+            user = BotUserModel.objects.get(telegram_id=self.telegram_id)
+            my_latitude = 39.67520758749987
+            my_longitude = 66.9268985761301
+            if user.latitude and user.longitude:
+                lat1, lon1 = radians(my_latitude), radians(my_longitude)
+                lat2, lon2 = radians(float(user.latitude)), radians(float(user.longitude))
+
+                dlon = lon2 - lon1
+                dlat = lat2 - lat1
+                a = sin(dlat / 2) ** 2 + cos(lat1) * cos(lat2) * sin(dlon / 2) ** 2
+                c = 2 * atan2(sqrt(a), sqrt(1 - a))
+                distance = 6371 * c  # Distance in kilometers
+
+                # Convert distance to meters and round to 3 decimal places
+                distance_meters = round(distance * 1000)
+                return distance_meters
+            else:
+                return None
+        except BotUserModel.DoesNotExist:
+            return None
+
+    def distance_from_me(self):
+        distance_meters = self.distance_in_meters
+        return f'{distance_meters} meters' if distance_meters is not None else None
+
+
     def __str__(self):
         if self.full_name:
             return self.full_name
@@ -191,3 +226,76 @@ class Order_7food(models.Model):
         verbose_name = "Order"
         verbose_name_plural = "Orders"
 
+
+
+class Order_table(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, verbose_name="Product")
+
+
+
+
+class OrderTable(models.Model):
+    name = models.CharField(max_length=300, default="foydalanuvchi", verbose_name="Name")
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Created At")
+    products = models.ManyToManyField(Product, through='OrderTableItem', related_name='order_tables', verbose_name="Products")
+    status = models.BooleanField(default=False, verbose_name="Status",
+                                 help_text="Tayyorlanga bo`lsa statusni belgilab keting !!!")
+    def __str__(self):
+        if self.name:
+            return f"Order by {self.name}"
+
+
+    @property
+    def all_sum(self):
+        total_sum = sum(item.total_price for item in self.items.all())
+        return total_sum
+
+    @property
+    def total_estimated_time(self):
+        total_time = sum(item.estimated_time for item in self.items.all())
+        return total_time
+    class Meta:
+        db_table = "OrderTable"
+        verbose_name = "Order Table"
+        verbose_name_plural = "Order Tables"
+
+
+class OrderTableItem(models.Model):
+    order_table = models.ForeignKey(OrderTable, on_delete=models.CASCADE, related_name='items', verbose_name="Order Table")
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, verbose_name="Product")
+    quantity = models.IntegerField(default=1, verbose_name="Quantity")
+
+    def __str__(self):
+        return f"{self.quantity} x {self.product.name}"
+
+    @property
+    def total_price(self):
+        return self.product.price * self.quantity
+
+    @property
+    def estimated_time(self):
+        return self.product.taxminiy_vaqt * self.quantity
+
+    class Meta:
+        db_table = "OrderTableItem"
+        verbose_name = "Order Table Item"
+        verbose_name_plural = "Order Table Items"
+
+
+class Order_saboyfood(models.Model):
+    telegram_id = models.IntegerField(verbose_name="Telegram ID", null=True, blank=True)
+    full_name = models.CharField(max_length=150, verbose_name="Full name", null=True, blank=True)
+    phone = models.CharField(max_length=150, verbose_name="Phone", null=True, blank=True)
+    product = models.CharField(verbose_name="Product", max_length=1000, null=True, blank=True)
+    narxi = models.IntegerField(verbose_name="Sum", default=0, null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    prepared = models.BooleanField(default=False, help_text="Agar buyurtma tayyorlangan bo`lsa chekboxni bosing !!!")
+    olib_ketildi = models.BooleanField(default=False, verbose_name="Olib ketildi", help_text="Agar buyurtma Olib ketilgan bo`lsa chekboxni bosing !!!" )
+    taxminiy_vaqt = models.IntegerField(verbose_name="Taxminiy Vaq", default = 2, null=True, blank=True)
+
+
+    def __str__(self):
+        if self.full_name:
+            return self.full_name
+        else:
+            return "Order"

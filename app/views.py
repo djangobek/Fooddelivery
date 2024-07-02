@@ -11,9 +11,17 @@ from rest_framework import status
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
 from rest_framework import filters
+from .utils import Sum_all_order_time
+
 class BotUserViewset(ModelViewSet):
     queryset = BotUserModel.objects.all()
     serializer_class = BotUserSerializer
+
+class TotalOrderTimeView(APIView):
+    def get(self, request):
+        total_time = Sum_all_order_time()
+        return Response({"total_time": total_time})
+
 class GetUser(APIView):
     def post(self,request):
         data = request.data
@@ -114,6 +122,16 @@ class ChangePhoneNumber(APIView):
         user.phone = data['phone']
         user.save()
         return Response({'status': 'Phone Number changed.'})
+
+class ChangeType(APIView):
+    def post(self, request):
+        data = request.POST
+        data = data.dict()
+        telegram_id = data['telegram_id']
+        user = BotUserModel.objects.get(telegram_id=telegram_id)
+        user.type = data['type']
+        user.save()
+        return Response({'status': 'Type  changed.'})
 class ChangeAddress(APIView):
     def post(self, request):
         data = request.POST
@@ -217,12 +235,21 @@ class BotUserInfo(APIView):
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from .models import Order_7food
-from app.serializer import Order7foodSerializer
+from .models import *
+from app.serializer import *
 
 class Order7foodCreateView(APIView):
     def post(self, request, *args, **kwargs):
         serializer = Order7foodSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class Order7foodSaboyCreateView(APIView):
+    def post(self, request, *args, **kwargs):
+        serializer = Order7foodSaboySerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
