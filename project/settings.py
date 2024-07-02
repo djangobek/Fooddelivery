@@ -181,7 +181,7 @@ JAZZMIN_SETTINGS = {
     "welcome_sign": "Welcome to Bot Admin Panel ",
 
     # Copyright on the footer
-    "copyright": "Behzod Asliddinov Ltd",
+    "copyright": "Cybercore Ltd",
 
     # List of model admins to search from the search bar, search bar omitted if excluded
     # If you want to use a single search field you dont need to use a list, you can use a simple string
@@ -201,7 +201,7 @@ JAZZMIN_SETTINGS = {
         {"name": "Home",  "url": "admin:index", "permissions": ["auth.view_user"]},
 
         # external url that opens in a new window (Permissions can be added)
-        {"name": "Support", "url": "https://t.me/Bekhzod_Asliddinov", "new_window": True},
+        {"name": "Support", "url": "https://t.me/Nurbekstar", "new_window": True},
 
         # model admin to link to (Permissions checked against model)
         # {"model": "auth.User"},
@@ -216,7 +216,7 @@ JAZZMIN_SETTINGS = {
 
     # Additional links to include in the user menu on the top right ("app" url type is not allowed)
     "usermenu_links": [
-        {"name": "Support", "url": "https://t.me/Bekhzod_Asliddinov", "new_window": True},
+        {"name": "Support", "url": "https://t.me/Nurbekstar", "new_window": True},
         {"model": "auth.user"}
     ],
 
@@ -260,6 +260,9 @@ JAZZMIN_SETTINGS = {
         "app.Location":"fas fa-address-card",
         "app.OrderItem":"fas fa-shopping-basket",
         "app.Order":"fas fa-shopping-cart",
+        "app.OrderTableItem" : "fas fa-shopping-basket",
+        "app.Order_7food" : "fas fa-shopping-basket",
+        "app.OrderTable" : "fas fa-shopping-cart",
         "app.Category":"fas fa-list-alt",
         "app.Product":"fas fa-hamburger",
         "app.SubCategory":"fas fa-list-alt",
